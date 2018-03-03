@@ -3,7 +3,7 @@ module multip(ArithAdd,ArithSub,Arithx2,Arithd2,Logand,Logor,Logxor,Lognot,Compe
 	input [3:0] S;
 	output reg [7:0] O;
 	
-	always@(L,A,K,C)
+	always@(ArithAdd,ArithSub,Arithx2,Arithd2,Logand,Logor,Logxor,Lognot,Compeq,Compgreat,Compless,CompMAX,nightrid)
 	begin
 		case(S)
 		4'b0000 : O = ArithAdd; //arithmatic add
