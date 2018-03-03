@@ -22,5 +22,3 @@ module multip(ArithAdd,ArithSub,Arithx2,Arithd2,Logand,Logor,Logxor,Lognot,Compe
 		endcase
 	end
 endmodule
-
-	
