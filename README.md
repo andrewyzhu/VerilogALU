@@ -1,2 +1,2 @@
 # VerilogALU
-ALU project for digital logic class
+ALU project for ECEN 2350 Digital Logic
