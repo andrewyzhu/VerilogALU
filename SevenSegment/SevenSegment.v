@@ -1,3 +1,14 @@
+// ============================================================
+//   Ver  :| Authors					               :| Mod. Date :|
+//   V1.1 :| Andrew Zhu and Kurt Sprague			:| 3/4/2018  :|
+// ============================================================
+// module that acts as a translator from the information given to a display on a seven segment display
+// takes in 4 bits of binary as an input
+// takes in 1 bit declaring if the decimal point is lit up or not
+// outputs a register of 7 bits going to the display
+// outputs the decimal point information
+// always block triggered at the change of the incoming binary 
+// case statement depending on the bits received
 module sevensegment(binaryin,decin,sevenseg,decout);
 	input [3:0] binaryin;
 	input decin; 
@@ -26,6 +37,10 @@ module sevensegment(binaryin,decin,sevenseg,decout);
 		end
 endmodule 
 
+//module to display the current mode
+// takes in the mode data from the multiplexer
+// outputs 2 registers of 7 bits to the seven segment display
+// the outputs are shown in the case statement below
 module sevensegmodedisplay(mode, sevensegmode1,sevensegmode2);
 	input [3:0] mode;
 	output reg [6:0] sevensegmode1;
