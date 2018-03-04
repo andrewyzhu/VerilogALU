@@ -1,3 +1,10 @@
+// ============================================================
+//   Ver  :| Authors					               :| Mod. Date :| 
+//   V1.1 :| Andrew Zhu and Kurt Sprague			:| 3/4/2018  :|
+// ============================================================
+
+// Create a module that serves as the multiplexer, taking in every previous output
+// 4 outputs, 2 decimal point registers, an output register to the sevensegment.v, and an output to the LEDS for knight rider
 module multip(ArithAdd,Addcarry,ArithSub,Subborrow,Arithx2,x2carry,Arithd2,d2remainder,Logand,Logor,Logxor,Lognot,Compeq,Compgreat,Compless,CompMAX,nightrid,signedadd,signedsub,O,S,outputLED,multiplydecpoint,dividedecpoint);
 	input [7:0] ArithAdd,ArithSub,Arithx2,Arithd2,Logand,Logor,Logxor,Lognot,Compeq,Compgreat,Compless,CompMAX,signedadd,signedsub;
 	input [3:0] S;
@@ -7,6 +14,12 @@ module multip(ArithAdd,Addcarry,ArithSub,Subborrow,Arithx2,x2carry,Arithd2,d2rem
 	output reg [7:0] O;
 	output reg [9:0] outputLED;
 	
+// an always block that triggers on any of the inputs
+// by default make the decimal points 0
+// make the multiplexer by doing a case statement with the switches/buttons making the outcomes
+// first 2 bits are the buttons, last 2 are the switches
+// LED9 is designated for the leftovers(carry,borrow,remainder)
+// the rest of the led's are to visualize the math in binary	
 	always@(ArithAdd,Addcarry,ArithSub,Subborrow,Arithx2,x2carry,Arithd2,d2remainder,Logand,Logor,Logxor,Lognot,Compeq,Compgreat,Compless,CompMAX,nightrid,signedadd,signedsub)
 	begin
 		multiplydecpoint = 1;
