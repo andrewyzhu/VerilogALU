@@ -2,7 +2,7 @@ module multip(ArithAdd,ArithCarry,ArithSub,Arithbor,Arithx2,Arithmcar,Arithd2,Ar
 	input [7:0] ArithAdd,ArithCarry,ArithSub,Arithbor,Arithx2,Arithmcar,Arithd2,Arithremain,Logand,Logor,Logxor,Lognot,Compeq,Compgreat,Compless,CompMAX,nightrid;
 	input [3:0] S;
 	output reg [7:0] O;
-	output reg [7:0] leftover;
+	output reg leftover;
 	
 	always@(ArithAdd,ArithSub,Arithx2,Arithd2,Logand,Logor,Logxor,Lognot,Compeq,Compgreat,Compless,CompMAX,nightrid)
 	begin
