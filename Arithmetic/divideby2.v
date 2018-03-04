@@ -4,7 +4,7 @@
 // ============================================================
 //module to divide an 8 bit number by 2
 // dividing is a simple bit shift to the right
-// preform the bitshift and make the carry equal to the value at position 0
+// perform the bitshift and make the remainder equal to the value that was initially at position 0
 module divideby2(x,q,r);
 	input [7:0] x;
 	output [7:0] q;
