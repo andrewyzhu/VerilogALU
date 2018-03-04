@@ -1,6 +1,6 @@
 // ============================================================================
 //   Ver  :| Author					:| Mod. Date :| Changes Made:
-//   V1.1 :|             			:| 06/01/2016:| Added Verilog file
+//   V1.1 :| Alexandra Du			:| 06/01/2016:| Added Verilog file
 // ============================================================================
 
 
@@ -130,11 +130,16 @@ reg [1:0] buttoncount;
 reg [1:0] switchstate;
 reg [3:0] modecontrol;
 wire[7:0] muxout;
-wire[7:0] leftover;
-wire [7:0] sumout,diffout,productout,quotientout,orout,andout,xorout,notout,greaterout,lessthanout,equalout,maxout,addcarryout,subborrowout,multcarryout,divremainderout;
-wire [7:0] nightrider;
+wire [7:0] sumout,diffout,productout,quotientout,orout,andout,xorout,notout,greaterout,lessthanout,equalout,maxout;
+wire [9:0] knightrider;
 wire decin;
-wire test;
+wire addercarry;
+wire subtractorborrow;
+wire multiplycarry;
+wire divideremainder;
+wire leftover;
+wire multiplydecpoint;
+wire dividedecpoint;
 //=======================================================
 //  Structural coding
 //=======================================================
@@ -153,10 +158,10 @@ always @(SW[8],SW[9]) begin
 	end
 
 
-unsignedripplecarryadder a1(SW[7:4],SW[3:0],sumout[3:0],addcarryout);
-unsignedsubtractor s1(SW[7:4],SW[3:0],diffout[3:0],subborrowout);
-multiplyby2 m1(SW[7:0],productout,multcarryout);
-divideby2 d1(SW[7:0],quotientout,divremainderout);
+unsignedripplecarryadder a1(SW[7:4],SW[3:0],sumout[3:0],addercarry);
+unsignedsubtractor s1(SW[7:4],SW[3:0],diffout[3:0],subtractorborrow);
+multiplyby2 m1(SW[7:0],productout,multiplycarry);
+divideby2 d1(SW[7:0],quotientout,divideremainder);
 aAND and1(SW[7:4],SW[3:0],andout[3:0]);
 oOR o1(SW[7:4],SW[3:0],orout[3:0]);
 EXOR x1(SW[7:4],SW[3:0],xorout[3:0]);
@@ -165,15 +170,14 @@ equal e1(SW[7:4],SW[3:0],equalout[0]);
 greater g1(SW[7:4],SW[3:0],greaterout[0]);
 lessthan l1(SW[7:4],SW[3:0],lessthanout[0]);
 max max1(SW[7:4],SW[3:0],maxout[3:0]);
-knightrider(clk, nightrider);
+knightrider kr1(ADC_CLK_10,knightrider);
 
-multip(sumout,addcarryout,diffout,subborrowout,productout,multcarryout,quotientout,divremainderout,andout,orout,xorout,notout,equalout,greaterout,lessthanout,maxout,nightrider,muxout,modecontrol,leftover);
-
-sevensegment(muxout[3:0],decin,HEX0[6:0],HEX0[7]);
-sevensegment(muxout[7:4],decin,HEX1[6:0],HEX1[7]);
-
-assign LEDR[9:0] = muxout;
+multip(sumout,addercarry,diffout,subtractorborrow,productout,multiplycarry,quotientout,divideremainder,andout,orout,xorout,notout,equalout,greaterout,lessthanout,maxout,knightrider,muxout,modecontrol,LEDR[9:0],multiplydecpoint,dividedecpoint);
 
 
-
+sevensegment(SW[7:4],decin,HEX5[6:0],HEX5[7]);
+sevensegment(SW[3:0],decin,HEX4[6:0],HEX4[7]);
+sevensegmodedisplay(modecontrol,HEX3[6:0],HEX2[6:0]);
+sevensegment(muxout[3:0],dividedecpoint,HEX0[6:0],HEX0[7]);
+sevensegment(muxout[7:4],multiplydecpoint,HEX1[6:0],HEX1[7]);
 endmodule
