@@ -16,18 +16,21 @@ module multip(ArithAdd,Addcarry,ArithSub,Subborrow,Arithx2,x2carry,Arithd2,d2rem
 		begin
 			O = ArithAdd; //arithmatic add
 			outputLED[7:0] = O;
+			outputLED[8] = 0;
 			outputLED[9] = Addcarry;
 		end
 		4'b0001 : 
 		begin
 			O = ArithSub; //arithmatic sub
 			outputLED[7:0] = O;
+			outputLED[8] = 0;
 			outputLED[9] = Subborrow;
 		end
 		4'b0010 : 
 		begin
 			O = Arithx2; //arithmatic x2
 			outputLED[7:0] = O;
+			outputLED[8] = 0;
 			outputLED[9] = x2carry;
 			multiplydecpoint = ~x2carry;
 		end
@@ -35,6 +38,7 @@ module multip(ArithAdd,Addcarry,ArithSub,Subborrow,Arithx2,x2carry,Arithd2,d2rem
 		begin
 			O = Arithd2; //arithmatic /2
 			outputLED[7:0] = O;
+			outputLED[8] = 0;
 			outputLED[9] = d2remainder;
 			dividedecpoint = ~d2remainder;
 		end
@@ -42,41 +46,49 @@ module multip(ArithAdd,Addcarry,ArithSub,Subborrow,Arithx2,x2carry,Arithd2,d2rem
 		begin
 			O = Logand; //logical and
 			outputLED[7:0] = O;
+			outputLED[9:8] = 2'b00;
 		end
 		4'b0101 : 
 		begin 
 			O = Logor; //logical or
 			outputLED[3:0] = O;
+			outputLED[9:8] = 2'b00;
 		end
 		4'b0110 : 
 		begin
 			O = Logxor; //logical xor
 			outputLED[7:0] = O;
+			outputLED[9:8] = 2'b00;
 		end
 		4'b0111 : 
 		begin
 			O = Lognot; //logical not
 			outputLED[7:0] = O;
+			outputLED[9:8] = 2'b00;
 		end
 		4'b1000 : 
 		begin
 			O = Compeq; //comparison =
 			outputLED[7:0] = O;
+			outputLED[9:8] = 2'b00;
 		end
 		4'b1001 : 
 		begin
 			O = Compgreat; //comparison greater
 			outputLED[7:0] = O;
+			outputLED[9:8] = 2'b00;
 		end
 		4'b1010 : 
 		begin
 			O = Compless; //comparison less
 			outputLED[7:0] = O;
+			outputLED[9:8] = 2'b00;
 		end
 		4'b1011 :
 		begin
 			O = CompMAX; //comparison MAX
 			outputLED[7:0] = O;
+			outputLED[9:8] = 2'b00;
 		end
 		4'b1100 : 
 		begin
