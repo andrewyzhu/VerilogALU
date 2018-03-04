@@ -1,3 +1,12 @@
+// ============================================================
+//   Ver  :| Authors					               :| Mod. Date :|
+//   V1.1 :| Andrew Zhu and Kurt Sprague			:| 3/4/2018  :|
+// ============================================================
+// module for the bonus knight rider
+// knight rider reads in a clock provided from the board, along with a mode and a speed designated by switches
+// the outputs are simply the LED's on the board
+// knight rider works with shift directions, and buffers to appear as if its moving a certain direction
+
 module knightrider(clkin,LEDout,mode,speed);
 	input clkin;
 	input [3:0] mode;
