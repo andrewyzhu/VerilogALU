@@ -3,10 +3,10 @@
 //   V1.1 :| Andrew Zhu and Kurt Sprague			:| 3/4/2018  :|
 // ============================================================
 // module to operate as a full adder with
-// 2 numbers, a carry in
-// and output a sum and a carry out
-// a full adder works as a sum equaling the XOR of its inputs
-// the carry out is an OR of each input AND
+// 3 inputs: 2 operands and a carry in,
+// and 2 outputs: a sum and a carry out
+// sum equals the XOR of its inputs
+// the carry out is an OR of all possible combinations of inputs
 module fulladder(x,y,cin,s,cout);
 	input x;
 	input y;
