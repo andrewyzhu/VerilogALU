@@ -170,7 +170,7 @@ equal e1(SW[7:4],SW[3:0],equalout[0]);
 greater g1(SW[7:4],SW[3:0],greaterout[0]);
 lessthan l1(SW[7:4],SW[3:0],lessthanout[0]);
 max max1(SW[7:4],SW[3:0],maxout[3:0]);
-knightrider kr1(ADC_CLK_10,knightrider);
+knightrider kr1(ADC_CLK_10,knightrider,SW[7:4],SW[3:0]);
 
 multip(sumout,addercarry,diffout,subtractorborrow,productout,multiplycarry,quotientout,divideremainder,andout,orout,xorout,notout,equalout,greaterout,lessthanout,maxout,knightrider,muxout,modecontrol,LEDR[9:0],multiplydecpoint,dividedecpoint);
 
