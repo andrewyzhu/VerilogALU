@@ -130,7 +130,7 @@ reg [1:0] buttoncount;
 reg [1:0] switchstate;
 reg [3:0] modecontrol;
 wire[7:0] muxout;
-wire [7:0] sumout,diffout,productout,quotientout,orout,andout,xorout,notout,greaterout,lessthanout,equalout,maxout;
+wire [7:0] sumout,diffout,productout,quotientout,orout,andout,xorout,notout,greaterout,lessthanout,equalout,maxout,signedaddout, signedsubout;
 wire [9:0] knightrider;
 wire decin;
 wire addercarry;
@@ -171,8 +171,10 @@ greater g1(SW[7:4],SW[3:0],greaterout[0]);
 lessthan l1(SW[7:4],SW[3:0],lessthanout[0]);
 max max1(SW[7:4],SW[3:0],maxout[3:0]);
 knightrider kr1(ADC_CLK_10,knightrider,SW[7:4],SW[3:0]);
+signedadder sa1(SW[7:4],SW[3:0],signedaddout);
+signedsubtractor ss1(SW[7:4],SW[3:0],signedsubout);
 
-multip(sumout,addercarry,diffout,subtractorborrow,productout,multiplycarry,quotientout,divideremainder,andout,orout,xorout,notout,equalout,greaterout,lessthanout,maxout,knightrider,muxout,modecontrol,LEDR[9:0],multiplydecpoint,dividedecpoint);
+multip(sumout,addercarry,diffout,subtractorborrow,productout,multiplycarry,quotientout,divideremainder,andout,orout,xorout,notout,equalout,greaterout,lessthanout,maxout,knightrider,signedaddout,signedsubout,muxout,modecontrol,LEDR[9:0],multiplydecpoint,dividedecpoint);
 
 
 sevensegment(SW[7:4],decin,HEX5[6:0],HEX5[7]);
