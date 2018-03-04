@@ -1,15 +1,29 @@
-module multip(ArithAdd,ArithSub,Arithx2,Arithd2,Logand,Logor,Logxor,Lognot,Compeq,Compgreat,Compless,CompMAX,nightrid,O,S);
-	input [7:0] ArithAdd,ArithSub,Arithx2,Arithd2,Logand,Logor,Logxor,Lognot,Compeq,Compgreat,Compless,CompMAX,nightrid;
+module multip(ArithAdd,ArithCarry,ArithSub,Arithbor,Arithx2,Arithmcar,Arithd2,Arithremain,Logand,Logor,Logxor,Lognot,Compeq,Compgreat,Compless,CompMAX,nightrid,O,S,leftover);
+	input [7:0] ArithAdd,ArithCarry,ArithSub,Arithbor,Arithx2,Arithmcar,Arithd2,Arithremain,Logand,Logor,Logxor,Lognot,Compeq,Compgreat,Compless,CompMAX,nightrid;
 	input [3:0] S;
 	output reg [7:0] O;
+	output reg [7:0] leftover;
 	
 	always@(ArithAdd,ArithSub,Arithx2,Arithd2,Logand,Logor,Logxor,Lognot,Compeq,Compgreat,Compless,CompMAX,nightrid)
 	begin
+		leftover = 0;
 		case(S)
-		4'b0000 : O = ArithAdd; //arithmatic add
-		4'b0001 : O = ArithSub; //arithmatic sub
-		4'b0010 : O = Arithx2; //arithmatic x2
-		4'b0011 : O = Arithd2; //arithmatic /2
+		4'b0000 :begin
+		O = ArithAdd;
+		leftover = ArithCarry;
+		end //arithmatic add
+		4'b0001 :begin 
+		O = ArithSub;
+		leftover = Arithbor;
+		end  //arithmatic sub
+		4'b0010 :begin 
+		O = Arithx2;
+		leftover = Arithmcar;
+		end  //arithmatic x2
+		4'b0011 :begin 
+		O = Arithd2;
+		leftover = Arithremain;
+		end  //arithmatic /2
 		4'b0100 : O = Logand; //logical and
 		4'b0101 : O = Logor; //logical or
 		4'b0110 : O = Logxor; //logical xor
