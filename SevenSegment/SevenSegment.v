@@ -62,7 +62,7 @@ module sevensegmodedisplay(mode, sevensegmode1,sevensegmode2);
 				sevensegmode1 = 7'b1000111;	
 				sevensegmode2 = 7'b1000000;
 			end
-			4'b0110 : //logical xor, seven segment will display 'LX'
+			4'b0110 : //logical xor, seven segment will display 'LH'
 			begin
 				sevensegmode1 = 7'b1000111; 
 				sevensegmode2 = 7'b0001001;
@@ -87,7 +87,7 @@ module sevensegmodedisplay(mode, sevensegmode1,sevensegmode2);
 				sevensegmode1 = 7'b1000110; 
 				sevensegmode2 = 7'b1000111;
 			end
-			4'b1011 : //logical max, seven segment will display 'CX'
+			4'b1011 : //logical max, seven segment will display 'CH'
 			begin
 				sevensegmode1 = 7'b1000110; 
 				sevensegmode2 = 7'b0001001;
@@ -96,6 +96,21 @@ module sevensegmodedisplay(mode, sevensegmode1,sevensegmode2);
 			begin
 				sevensegmode1 = 7'b0101011;
 				sevensegmode2 = 7'b0101111;
+			end
+			4'b1101: //signed adder, seven segment will display '5a'
+			begin
+				sevensegmode1 = 7'b0010010;
+				sevensegmode2 = 7'b0001000;
+			end
+			4'b1110: //signed subtractor, seven segment will display '55'
+			begin
+				sevensegmode1 = 7'b0010010;
+				sevensegmode2 = 7'b0010010;
+			end
+			4'b1111: //no function, seven segment will display 'nf'
+			begin
+				sevensegmode1 = 7'b0101011;
+				sevensegmode2 = 7'b0001110;
 			end
 			endcase
 		end
