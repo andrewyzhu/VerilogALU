@@ -1,5 +1,5 @@
-module multip(ArithAdd,Addcarry,ArithSub,Subborrow,Arithx2,x2carry,Arithd2,d2remainder,Logand,Logor,Logxor,Lognot,Compeq,Compgreat,Compless,CompMAX,nightrid,O,S,outputLED,multiplydecpoint,dividedecpoint);
-	input [7:0] ArithAdd,ArithSub,Arithx2,Arithd2,Logand,Logor,Logxor,Lognot,Compeq,Compgreat,Compless,CompMAX;
+module multip(ArithAdd,Addcarry,ArithSub,Subborrow,Arithx2,x2carry,Arithd2,d2remainder,Logand,Logor,Logxor,Lognot,Compeq,Compgreat,Compless,CompMAX,nightrid,signedadd,signedsub,O,S,outputLED,multiplydecpoint,dividedecpoint);
+	input [7:0] ArithAdd,ArithSub,Arithx2,Arithd2,Logand,Logor,Logxor,Lognot,Compeq,Compgreat,Compless,CompMAX,signedadd,signedsub;
 	input [3:0] S;
 	input [9:0] nightrid;
 	input Addcarry, Subborrow, x2carry, d2remainder;
@@ -7,7 +7,7 @@ module multip(ArithAdd,Addcarry,ArithSub,Subborrow,Arithx2,x2carry,Arithd2,d2rem
 	output reg [7:0] O;
 	output reg [9:0] outputLED;
 	
-	always@(ArithAdd,Addcarry,ArithSub,Subborrow,Arithx2,x2carry,Arithd2,d2remainder,Logand,Logor,Logxor,Lognot,Compeq,Compgreat,Compless,CompMAX,nightrid)
+	always@(ArithAdd,Addcarry,ArithSub,Subborrow,Arithx2,x2carry,Arithd2,d2remainder,Logand,Logor,Logxor,Lognot,Compeq,Compgreat,Compless,CompMAX,nightrid,signedadd,signedsub)
 	begin
 		multiplydecpoint = 1;
 		dividedecpoint = 1; 
@@ -94,6 +94,23 @@ module multip(ArithAdd,Addcarry,ArithSub,Subborrow,Arithx2,x2carry,Arithd2,d2rem
 		begin
 			O = 0;
 			outputLED = nightrid; //night rider
+		end
+		4'b1101 : //signed adder
+		begin
+			O = signedadd;
+			outputLED[7:0] = O;
+			outputLED[9:8] = 0;
+		end
+		4'b1110 : //signed subtractor
+		begin
+			O = signedsub;
+			outputLED[7:0] = O;
+			outputLED[9:8] = 0;
+		end
+		4'b1111: //no function
+		begin
+			O = 0;
+			outputLED = 0;
 		end
 		endcase
 		
