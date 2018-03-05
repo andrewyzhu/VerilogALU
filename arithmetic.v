@@ -5,8 +5,9 @@
 // ============================================================
 // module to do unsigned subtraction
 // inputs are 4 bits
-// output is 4 bits as well
-// there is an extra output in case there is a borrow that needs to be represented
+// output difference is 4 bits
+// output borrow out is 1 bit
+// create a buffer to store all borrows
 // wire from our full subtractor module needed in a later for loop
 // in the for loop, subtract each bit using our full subtractor, registering a borrow when used
 // assign our borrow output to our buffer at bit 3, so we get a 1 bit representation of if we needed a borrow or not
@@ -30,10 +31,10 @@ endmodule
 // module to be a RCA
 // inputs 4 bit for x and y
 // 2 outputs, one the added number, and two the carry out if necessarry
-// wire a buffer to see if a carry out happened
+// create a buffer to store all carries
 // use the full adder module to add each bit in a for loop, returning a carry out if need be
 // assign the carry out to be the bit represented at the buffer[3]
-// otherwise output the value stored from the addition
+// output the value stored from the addition
 module unsignedripplecarryadder(x,y,s,cout);
 	parameter size = 4;
 	input [size-1:0] x;
@@ -53,7 +54,7 @@ endmodule
 
 // module to multiply an 8 bit number by two, and output a carry if need be
 // multiplying by 2 is a simple bit shift to the left
-// preform the bit shift and make the carry equal to the bit at location 7
+// perform the bit shift and make the carry equal to the bit that was previously at location 7
 module multiplyby2(x,p,c);
 	input [7:0] x;
 	output [7:0] p;
@@ -62,26 +63,20 @@ module multiplyby2(x,p,c);
 	assign p = x << 1;
 endmodule
 
-// module to act as a full subtractor, similar to a full adder
-// the inputs are similar because they are 2 numbers and a borrow in
-// the out puts are similar as they are a difference and a borrow out
-// the difference is similar in the way that they are an XOR of the inputs
-// but the borrow out is different in the way that the number you are subtracting must be inverted in the borrow out logic
-module fullsubtractor(x,y,bin,d,bout);
-	input x;
-	input y;
-	input bin;
-	output d;
-	output bout;
-	assign d = x^y^bin;
-	assign bout = (y&bin) | ((~x)&bin) | ((~x)&y);
+//module to divide an 8 bit number by 2
+// dividing is a simple bit shift to the right
+// perform the bitshift and make the carry equal to the value initially at position 0
+module divideby2(x,q,r);
+	input [7:0] x;
+	output [7:0] q;
+	output r; 
+	assign r = x[0];
+	assign q = x >> 1;
 endmodule
 
-// module to operate as a full adder with
-// 2 numbers, a carry in
+// module to operate as a full adder 
+// inputs: 2 operands and a carry in
 // and output a sum and a carry out
-// a full adder works as a sum equaling the XOR of its inputs
-// the carry out is an OR of each input AND
 module fulladder(x,y,cin,s,cout);
 	input x;
 	input y;
@@ -92,13 +87,17 @@ module fulladder(x,y,cin,s,cout);
 	assign cout = (y&cin) | (x&y) | (x&cin);
 endmodule
 
-//module to divide an 8 bit number by 2
-// dividing is a simple bit shift to the right
-// preform the bitshift and make the carry equal to the value at position 0
-module divideby2(x,q,r);
-	input [7:0] x;
-	output [7:0] q;
-	output r; 
-	assign r = x[0];
-	assign q = x >> 1;
+
+// module to act as a full subtractor, similar to a full adder
+// the inputs are similar because they are 2 numbers and a borrow in
+// the out puts are similar as they are a difference and a borrow out
+module fullsubtractor(x,y,bin,d,bout);
+	input x;
+	input y;
+	input bin;
+	output d;
+	output bout;
+	assign d = x^y^bin;
+	assign bout = (y&bin) | ((~x)&bin) | ((~x)&y);
 endmodule
+
