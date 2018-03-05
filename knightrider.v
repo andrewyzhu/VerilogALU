@@ -115,7 +115,7 @@ module knightrider(clkin,LEDout,mode,speed);
 			if(shiftdirection9 == 0) begin
 				LEDbuf9 = LEDbuf9 << 4;
 			end
-			if(shiftdirection2 == 1) begin
+			if(shiftdirection9 == 1) begin
 				LEDbuf9 = LEDbuf9 >> 4;
 			end
 			
