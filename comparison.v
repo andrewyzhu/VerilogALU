@@ -4,11 +4,8 @@
 //   Digital Logic ECEN 2350 Spring Semester
 // ============================================================
 // module max that takes in 2 inputs and outputs the maximum of the two
-// output is going to be a wire
-// wire the output of our greater than module 
-// use our greater than module to do a bitwise AND between every bit of the input and the output of our greater than module
-// bitwise OR the result
-// assign each bit of the output to each individual result
+// uses greater module written below
+// outputs x if greater(x,y) is 1, outputs y if greater(x,y) is 0
 module max(x,y,o);
 	input [3:0] x;
 	input [3:0] y;
@@ -22,7 +19,6 @@ module max(x,y,o);
 endmodule 
 
 // module that will determine if x input is less than y input
-// assign statement that triggers on the change of x or y
 // default the output to 0
 // if x is less than y set the output to 1
 module lessthan(x,y,o);
@@ -38,7 +34,6 @@ module lessthan(x,y,o);
 endmodule 
 
 // module that will determine if x is greater than y
-// the output will be a register because it changes based off of the always block
 // always block triggered at x or y change
 // default output to 0
 // if x is greater than y set output to 1
@@ -55,7 +50,6 @@ module greater(x,y,o);
 endmodule
 
 // module that determines if x and y are equal
-// output is a reg because the equality is determined in an always block
 // always block triggered at x or y
 // output is default set to 0
 // if x and y are equal set output to 1
