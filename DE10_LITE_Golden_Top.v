@@ -1,6 +1,7 @@
 // ============================================================================
 //   Ver  :| Authors					               :| Mod. Date :| Changes Made:
 //   V1.1 :| Andrew Zhu and Kurt Sprague			:| 3/4/2018  :| Added implementation for all .v files below this top
+//   Digital Logic ECEN 2350 Spring Semester
 // ============================================================================
 
 
@@ -136,7 +137,7 @@ wire[7:0] muxout;
 wire [7:0] sumout,diffout,productout,quotientout,orout,andout,xorout,notout,greaterout,lessthanout,equalout,maxout,signedaddout, signedsubout;
 wire [9:0] knightrider;
 
-// wires for the carry/borrow/remainder of arithmetic modules, also wires for the inputs for the decimal points on the seven segment displays
+// wires for the specific representations
 wire decin;
 wire addercarry;
 wire subtractorborrow;
@@ -150,31 +151,31 @@ wire dividedecpoint;
 //  Structural coding
 //=======================================================
 
-// toggles the most significant bit of modecontrol everytime key0 is pressed
+// assigns key[0] to either be 1 or 0
 always @(posedge KEY[0]) begin
 	modecontrol[3] = modecontrol[3]^1;
 	end
 
-//toggles the second most significant bit of modecontrol everytime key0 is pressed
+//assigns key[1] to either be a 1 or 0
 always @(posedge KEY[1]) begin 
 	modecontrol[2] = modecontrol[2]^1;
 	end
 
-//switch 8 and 9 set the two least significant bits of mode control
+//assigns the two switches to either be 1 or 0
 always @(SW[8],SW[9]) begin
 	switchstate = SW[9:8];
 	modecontrol[1:0] = switchstate;
 	end
 
 //initialization of our unsigned adder/subtractor
-signedadder sa1(SW[7:4],SW[3:0],signedaddout);
-signedsubtractor ss1(SW[7:4],SW[3:0],signedsubout);
+unsignedripplecarryadder a1(SW[7:4],SW[3:0],sumout[3:0],addercarry);
+unsignedsubtractor s1(SW[7:4],SW[3:0],diffout[3:0],subtractorborrow);
 
 //initialization of our arithmetic modules
 multiplyby2 m1(SW[7:0],productout,multiplycarry);
 divideby2 d1(SW[7:0],quotientout,divideremainder);
-unsignedripplecarryadder a1(SW[7:4],SW[3:0],sumout[3:0],addercarry);
-unsignedsubtractor s1(SW[7:4],SW[3:0],diffout[3:0],subtractorborrow);
+signedadder sa1(SW[7:4],SW[3:0],signedaddout);
+signedsubtractor ss1(SW[7:4],SW[3:0],signedsubout);
 
 //initialization of our logical modules
 aAND and1(SW[7:4],SW[3:0],andout[3:0]);
@@ -188,20 +189,16 @@ greater g1(SW[7:4],SW[3:0],greaterout[0]);
 lessthan l1(SW[7:4],SW[3:0],lessthanout[0]);
 max max1(SW[7:4],SW[3:0],maxout[3:0]);
 
-//initialization of our magic module
+//initialization of our knightrider module
 knightrider kr1(ADC_CLK_10,knightrider,SW[7:4],SW[3:0]);
 
-//tieing everything together into the multiplexer module, multiplexer outputs to LEDs and seven segment display
+//tieing everything together into the multiplexer module
 multip(sumout,addercarry,diffout,subtractorborrow,productout,multiplycarry,quotientout,divideremainder,andout,orout,xorout,notout,equalout,greaterout,lessthanout,maxout,knightrider,signedaddout,signedsubout,muxout,modecontrol,LEDR[9:0],multiplydecpoint,dividedecpoint);
 
-//HEX5 and HEX4 used to display inputs from SW[7:0]
+//Use of our sevensegment module to show the modecontrol, and the decimal points if need be
 sevensegment(SW[7:4],decin,HEX5[6:0],HEX5[7]);
 sevensegment(SW[3:0],decin,HEX4[6:0],HEX4[7]);
-
-//HEX3 and HEX2 used to display current mode of operation
 sevensegmodedisplay(modecontrol,HEX3[6:0],HEX2[6:0]);
-	
-//HEX1 and HEX0 used to display outputs
 sevensegment(muxout[3:0],dividedecpoint,HEX0[6:0],HEX0[7]);
 sevensegment(muxout[7:4],multiplydecpoint,HEX1[6:0],HEX1[7]);
 endmodule
