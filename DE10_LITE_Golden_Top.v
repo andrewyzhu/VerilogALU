@@ -128,7 +128,6 @@ module DE10_LITE_Golden_Top(
 //  REG/WIRE declarations
 //=======================================================
 //registers for the mode control going into the multiplexer
-reg [1:0] buttoncount;
 reg [1:0] switchstate;
 reg [3:0] modecontrol;
 
@@ -137,7 +136,7 @@ wire[7:0] muxout;
 wire [7:0] sumout,diffout,productout,quotientout,orout,andout,xorout,notout,greaterout,lessthanout,equalout,maxout,signedaddout, signedsubout;
 wire [9:0] knightrider;
 
-// wires for the specific representations
+// wires for borrows, carries, remainders, and seven segment decimal inputs. 
 wire decin;
 wire addercarry;
 wire subtractorborrow;
@@ -151,31 +150,32 @@ wire dividedecpoint;
 //  Structural coding
 //=======================================================
 
-// assigns key[0] to either be 1 or 0
+// toggles the most significant bit of mode control on a KEY0 press
 always @(posedge KEY[0]) begin
 	modecontrol[3] = modecontrol[3]^1;
 	end
 
-//assigns key[1] to either be a 1 or 0
+//toggles second most significant bit of mode control on a KEY1 press
 always @(posedge KEY[1]) begin 
 	modecontrol[2] = modecontrol[2]^1;
 	end
 
-//assigns the two switches to either be 1 or 0
+//least two significant bits of mode control are determined by state of SW9 and SW8
 always @(SW[8],SW[9]) begin
 	switchstate = SW[9:8];
 	modecontrol[1:0] = switchstate;
 	end
 
-//initialization of our unsigned adder/subtractor
-unsignedripplecarryadder a1(SW[7:4],SW[3:0],sumout[3:0],addercarry);
-unsignedsubtractor s1(SW[7:4],SW[3:0],diffout[3:0],subtractorborrow);
+//initialization of our signed adder/subtractor
+signedadder sa1(SW[7:4],SW[3:0],signedaddout);
+signedsubtractor ss1(SW[7:4],SW[3:0],signedsubout);
 
 //initialization of our arithmetic modules
 multiplyby2 m1(SW[7:0],productout,multiplycarry);
 divideby2 d1(SW[7:0],quotientout,divideremainder);
-signedadder sa1(SW[7:4],SW[3:0],signedaddout);
-signedsubtractor ss1(SW[7:4],SW[3:0],signedsubout);
+unsignedripplecarryadder a1(SW[7:4],SW[3:0],sumout[3:0],addercarry);
+unsignedsubtractor s1(SW[7:4],SW[3:0],diffout[3:0],subtractorborrow);
+
 
 //initialization of our logical modules
 aAND and1(SW[7:4],SW[3:0],andout[3:0]);
@@ -195,7 +195,7 @@ knightrider kr1(ADC_CLK_10,knightrider,SW[7:4],SW[3:0]);
 //tieing everything together into the multiplexer module
 multip(sumout,addercarry,diffout,subtractorborrow,productout,multiplycarry,quotientout,divideremainder,andout,orout,xorout,notout,equalout,greaterout,lessthanout,maxout,knightrider,signedaddout,signedsubout,muxout,modecontrol,LEDR[9:0],multiplydecpoint,dividedecpoint);
 
-//Use of our sevensegment module to show the modecontrol, and the decimal points if need be
+//show inputs on HEX5 and HEX4, mode on HEX3 and HEX2, outputs on HEX1 and HEX0
 sevensegment(SW[7:4],decin,HEX5[6:0],HEX5[7]);
 sevensegment(SW[3:0],decin,HEX4[6:0],HEX4[7]);
 sevensegmodedisplay(modecontrol,HEX3[6:0],HEX2[6:0]);
